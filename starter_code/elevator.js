@@ -6,6 +6,7 @@ class Elevator {
     this.direction = "up";
     this.waitingList = [];
     this.passengers= [];
+    this.counter=0;
   }
 
   start() {
@@ -14,29 +15,41 @@ class Elevator {
 
   stop() { 
     clearInterval(this.interval);
+    console.log(this.counter);
   }
 
   update() { 
     this.log();
     this._passengersEnter();
     this._passengersLeave();
+    this.counter++;
+    // this.requests.sort((a,b)=>{
+    //   if (this.direction==="up"){
+    //     if (a>this.floor && b >this.floor){
+    //       return a-b
+    //     } else if (a>this.floor && b <this.floor){
+    //       return -1
+    //     } else if (a<this.floor && b >this.floor){
+    //       return 1;
+    //     }
+    //   } else {
+    //     if (a<this.floor && b <this.floor){
+    //       return b-a;
+    //     } else if (a>this.floor && b <this.floor){
+    //       return 1
+    //     } else if (a<this.floor && b >this.floor){
+    //       return -1;
+    //     }
+    //   }
+    // })
     this.requests.sort((a,b)=>{
-      if (this.direction==="up"){
-        if (a>this.floor && b >this.floor){
-          return a-b
-        } else if (a>this.floor && b <this.floor){
-          return -1
-        } else if (a<this.floor && b >this.floor){
-          return 1;
-        }
-      } else {
-        if (a<this.floor && b <this.floor){
-          return b-a;
-        } else if (a>this.floor && b <this.floor){
-          return 1
-        } else if (a<this.floor && b >this.floor){
-          return -1;
-        }
+      if ((Math.abs(a-this.floor)-Math.abs(b-this.floor))!=0){
+        return Math.abs(a-this.floor)-Math.abs(b-this.floor);
+      } 
+      else if (this.direction==="up"){
+        return b-a;
+      } else if (this.direction==="down"){
+        return a-b;
       }
     })
     console.log(this.requests)
